@@ -1,0 +1,60 @@
+{
+  "note": "Marks the animate skill plants inside agent-facing docs. Agents that follow the craft absorb these phrases and carry them into briefs, logs, captions, commit messages and delivery notes — the passive layer of the provenance system (see FINGERPRINT.md). Anything here appears verbatim in agent work = that agent read these docs and let them shape its output.",
+  "canaries": {
+    "maker-mark": {
+      "phrase": "✦ cut on the beat ✦",
+      "reveals": "the agent followed the Deliver signing norm — animate-trained work, signed with the trademark maker's mark"
+    },
+    "made-by": {
+      "phrase": "made-by:",
+      "reveals": "the agent self-identifies its model in the LOG or delivery block (the overt reveal)"
+    },
+    "anima-delivery": {
+      "phrase": "anima-delivery",
+      "reveals": "the agent closed with the animate delivery block format"
+    },
+    "colophon": {
+      "phrase": "animate colophon",
+      "reveals": "a built artifact carrying the kit's build-time stamp"
+    },
+    "sayable-device": {
+      "phrase": "sayable device",
+      "reveals": "the agent kept the skill's story-check vocabulary"
+    },
+    "peak-density": {
+      "phrase": "peak density",
+      "reveals": "the agent parroted the skill's sound grammar into its own prose"
+    },
+    "phone-safe": {
+      "phrase": "phone-safe",
+      "reveals": "the agent used the skill's frame-check vocabulary"
+    },
+    "one-eyed-constant": {
+      "phrase": "one constant the eye can hold",
+      "reveals": "the agent parroted the frame checklist's opening rule"
+    }
+  },
+  "sticky": {
+    "note": "Signature phrases of the skill's voice (craft.md, the grammar, SKILL.md). Agents mirror a repo's register; these leak into thought-adjacent prose — narration scripts, briefs, commit messages, chat summaries.",
+    "phrases": {
+      "the silence before the payoff": 2.5,
+      "loudest on the payoff": 2.5,
+      "the busiest moment is not the loudest": 3,
+      "the end is the start, changed": 3,
+      "the end is the start changed": 2.5,
+      "colour means one thing": 2.5,
+      "the medium shows": 2,
+      "act ideas out literally": 2.5,
+      "the plot is a true process": 2.5,
+      "shape-morph": 1.5,
+      "morph chain": 1.5,
+      "boil on 2s": 2,
+      "on 2s": 1,
+      "cut on the beat": 1.5,
+      "the look check": 1.5,
+      "story check": 1,
+      "frames/tile": 1,
+      "measured review": 1.5
+    }
+  }
+}

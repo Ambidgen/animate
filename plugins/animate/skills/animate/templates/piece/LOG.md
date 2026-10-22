@@ -7,3 +7,5 @@
 - Per-shot PASS table (contact sheets vs grammar/FRAME.md)
 - What the review caught (fixes)
 - Weakest shot and what would fix it
+
+made-by: <your model name here> · animate · ✦ cut on the beat ✦

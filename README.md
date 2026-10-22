@@ -49,6 +49,8 @@ Each style folder has a `STYLE.md` (its rules, palette, motion habits and a fram
 - **Every format from one piece** — 9:16, 1:1, 4:5 and 16:9 laid out for each shape, not cropped.
 - **Motion that feels expensive** — closed-form springs in the kit and optional motion blur for smooth styles.
 - **Parallel builds** — long pieces split one scene file per agent, joined by the build.
+- **One-prompt mode** — a single response end to end: `tools/new.mjs` scaffolds with baked defaults, `tools/run.mjs` builds, previews, renders, reviews and prints the delivery block; bare sandboxes degrade honestly ([ONEPROMPT.md](plugins/animate/skills/animate/ONEPROMPT.md), [AGENTS.md](AGENTS.md)).
+- **Provenance, stamped and scraped** — every built file carries a visible colophon and an invisible watermark, finishing agents sign `made-by:` with their model name, and `tools/agentprint.mjs scrape` reads the marks back out of any harvest (canaries, the skill's sticky phrases, model trademark phrases) and ranks which agent family likely made what ([FINGERPRINT.md](plugins/animate/skills/animate/FINGERPRINT.md)).
 
 **Coming:** a WebGL motion-design style (ray-marched 3D, sub-frame motion blur, bloom) — the export and review tools already run WebGL pieces on the GPU and warn when only software rendering is available.
 
@@ -79,10 +81,23 @@ Or copy the skill folder by hand: `plugins/animate/skills/animate/` → `~/.clau
 /animate a narrated 45s explainer of how DNS works, math style, 16:9, voice from ElevenLabs
 ```
 
+### One prompt, one response
+
+Built for single-shot settings (blind/arena agents, automation, "just make it"): the skill collapses the check-ins into one response — baked defaults, scaffold + one pipeline command, self-approval against the frame checklist, and a signed delivery block. An agent dropped into this repo needs only [AGENTS.md](AGENTS.md) → [plugins/animate/skills/animate/ONEPROMPT.md](plugins/animate/skills/animate/ONEPROMPT.md):
+
+```bash
+node $SKILL/tools/new.mjs pieces/my-piece --title "The Bicycle" --style cut-paper --duration 30
+node $SKILL/tools/run.mjs pieces/my-piece --share    # build → previews → MP4 → measured review → delivery block
+```
+
+Every artifact is stamped on build with the kit's colophon and an invisible watermark, and finishing agents sign `made-by:` — `tools/agentprint.mjs scrape` reads the marks back out of any pile of finished work (trademark phrases, canaries, watermarks) and says which agent family likely made what. See [FINGERPRINT.md](plugins/animate/skills/animate/FINGERPRINT.md).
+
 Pieces are created in your project under `pieces/<name>/`. You can also drive the tools yourself:
 
 ```bash
 SKILL=~/.claude/skills/animate            # or the plugin's install path
+node $SKILL/tools/new.mjs pieces/my-piece --title "My piece" --style cut-paper --duration 30   # scaffold, no questions
+node $SKILL/tools/run.mjs pieces/my-piece --share        # one command: build, preview, export, review, delivery block
 node $SKILL/tools/build.mjs pieces/my-piece
 node $SKILL/tools/tile.mjs pieces/my-piece tile.png 24 48 96
 node $SKILL/tools/still.mjs pieces/my-piece 2.5,9,14 frames.png --scale 0.5
@@ -94,6 +109,7 @@ node $SKILL/tools/export.mjs pieces/my-piece --share --formats 9:16,1:1,16:9
 node $SKILL/tools/review.mjs pieces/my-piece
 node $SKILL/tools/measure/refs.mjs references/my-look/
 node $SKILL/tools/compare.mjs references/my-look/a.png pieces/my-piece 2.5 compare.png --auto-trim
+node $SKILL/tools/agentprint.mjs scrape pieces/         # passive provenance scan: watermarks, canaries, trademark phrases
 ```
 
 Open any built `index.html` in a browser to preview it (click to hear the score; `?t=12.5` freezes a frame). Every style's demo builds the same way: `node $SKILL/tools/build.mjs $SKILL/styles/riso/demo`.

@@ -1,0 +1,59 @@
+{
+  "note": "Trademark-phrase lexicon for passive agent attribution (agentprint.mjs scrape). Phrases models lean on in their work; a hit is evidence, never proof. Matched case-insensitively with loose word boundaries. Raise a weight when a phrase gets rare; lower it when humans pick it up.",
+  "families": {
+    "claude": {
+      "label": "Anthropic Claude family (or a Claude-distilled derivative)",
+      "phrases": {
+        "delve": 2, "dive deep": 1.5, "rich tapestry": 3, "tapestry": 1.5,
+        "it's worth noting": 2, "worth noting that": 1.5,
+        "a testament to": 2, "underscores": 1.5, "in the realm of": 2,
+        "navigate the landscape": 2.5, "landscape of": 1, "furthermore": 1,
+        "moreover": 1, "in summary": 0.5, "i hope this helps": 1.5,
+        "certainly. here": 2, "let me know if": 1, "would you like me to": 1.5,
+        "i've created": 1, "i'll now": 1, "let's explore": 1.5,
+        "crucial role": 1, "plays a vital role": 2, "it's important to note": 1.5
+      }
+    },
+    "gpt": {
+      "label": "OpenAI GPT family (ChatGPT / Codex / o-series style)",
+      "phrases": {
+        "great question": 2.5, "certainly!": 1.5, "absolutely!": 1.5,
+        "let's dive in": 2.5, "let's dive into": 2, "here's a breakdown": 2,
+        "keep in mind": 1, "feel free to": 1, "happy to help": 2.5,
+        "pro tip": 2, "game-changer": 1.5, "unleash the power": 2.5,
+        "elevate your": 2, "look no further": 2, "in today's fast-paced": 2.5,
+        "🚀": 2, "✨": 1.5, "i hope this helps!": 1.5, "sound good?": 1,
+        "want me to": 1, "here is a": 0.5, "here's what i": 1
+      }
+    },
+    "gemini": {
+      "label": "Google Gemini family",
+      "phrases": {
+        "sure, i can help": 2.5, "sure! i can": 2.5, "i'm glad you asked": 2.5,
+        "as a helpful assistant": 3, "in today's digital age": 2.5,
+        "it's important to note that": 1.5, "i hope this helps!": 1.5,
+        "certainly, i can": 2, "here's a comprehensive": 2
+      }
+    },
+    "generic-llm": {
+      "label": "any large language model (weak evidence; common marketing-LLM residue)",
+      "phrases": {
+        "seamless": 1, "seamlessly": 1, "robust": 0.5, "cutting-edge": 1.5,
+        "leverage": 1, "utilize": 1, "in conclusion": 1, "holistic": 1,
+        "synergy": 1.5, "unlock the": 1, "in the ever-evolving": 2.5,
+        "embark on a journey": 2.5, "delve into the world": 2.5,
+        "showcase": 0.5, "pivotal": 1, "whether you're a": 2,
+        "it is important to note": 1.5, "dive into the world": 2.5,
+        "in the world of": 1, "look no further": 1.5
+      }
+    }
+  },
+  "kit-signatures": {
+    "note": "Evidence the artifact was produced with the animate kit itself (not which model wrote it).",
+    "phrases": {
+      "renderAudioWav": 2, "renderAudioStems": 2, "window.TIMELINE": 1.5,
+      "springTrack": 1, "popS(": 1, "renderFrame": 1, "kit/morph": 1.5,
+      "piece.json": 1
+    }
+  }
+}

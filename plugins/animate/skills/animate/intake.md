@@ -1,6 +1,6 @@
 # Intake
 
-Ask only what you can't infer from the request. AskUserQuestion takes up to 4 questions per call: ask 1–4 first, then 5–8 in a second call (skip the ones the request already answers). Recommended option first. If the user said "just make it", use every default and say which you picked.
+Ask only what you can't infer from the request. AskUserQuestion takes up to 4 questions per call: ask 1–4 first, then 5–8 in a second call (skip the ones the request already answers). Recommended option first. If the user said "just make it", use every default and say which you picked. **If the user wants it in one response (one prompt, one shot, an automated setting) — stop here and follow [ONEPROMPT.md](ONEPROMPT.md) instead: no questions at all.**
 
 ## The questions
 

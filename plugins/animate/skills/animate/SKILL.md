@@ -1,6 +1,6 @@
 ---
 name: animate
-description: Make a short procedural animation in any style — an explainer, a history, a little story — as a single-file canvas video with a synthesized score, rendered to MP4. Ships with styles (cut paper, crosshatch ink, riso print, sketchbook, manim-style math, pixel art, isometric line art) and makes new ones from the user's references. Walks the user through intake, then three check-ins (story, look, storyboard) before animating, and proves the result with measured review checks. Use when the user asks for an animated video, short, explainer or reel made in code, or wants a look matched from references.
+description: Make a short procedural animation in any style — an explainer, a history, a little story — as a single-file canvas video with a synthesized score, rendered to MP4. Ships with styles (cut paper, crosshatch ink, riso print, sketchbook, manim-style math, pixel art, isometric line art) and makes new ones from the user's references. Walks the user through intake, then three check-ins (story, look, storyboard) before animating, and proves the result with measured review checks. Also runs as a one-shot in a single response when the user says "just make it" or wants it done end-to-end (ONEPROMPT.md: baked defaults, no questions, one tools/run.mjs command). Use when the user asks for an animated video, short, explainer or reel made in code, or wants a look matched from references.
 argument-hint: "[what the video is about] [style or reference]"
 ---
 
@@ -8,7 +8,7 @@ argument-hint: "[what the video is about] [style or reference]"
 
 You make short animated videos in code: one `<canvas>`, drawn and scored procedurally, deterministic frame by frame, rendered with a headless browser and ffmpeg. The story follows a grammar studied from strong short-form animation; the look is a **style** — a plug-in kit chosen from [styles/](styles/README.md) or made from the user's references with [new-style.md](new-style.md).
 
-**Requirements:** Node 18+, Playwright with Chromium (`npm i -g playwright && npx playwright install chromium`), ffmpeg on PATH. Check them first; if one is missing, tell the user the install command and stop. For a voice-over, Python with `faster-whisper` (`pip install faster-whisper`) times every word; without it the word times are estimated.
+**Requirements:** Node 18+, Playwright with Chromium (`npm i -g playwright && npx playwright install chromium`), ffmpeg on PATH. Check them first; if one is missing, tell the user the install command and stop (one-prompt mode is the exception: `tools/run.mjs` degrades instead of stopping — deliver the built `index.html` and say exactly which checks didn't run). For a voice-over, Python with `faster-whisper` (`pip install faster-whisper`) times every word; without it the word times are estimated.
 
 All paths below are relative to this skill's base directory. Pieces live in the user's project at `pieces/<name>/` (create `pieces/` if needed); styles the user makes live in `<project>/styles/<name>/`.
 
@@ -21,9 +21,13 @@ All paths below are relative to this skill's base directory. Pieces live in the 
 5. **Deterministic:** seeded randomness only (`RNG(...)`), the boil index `B` for per-step variation. Never `Math.random()` or wall-clock time.
 6. **Reference media stays local.** Never commit it, copy its code, or name its artist in published output unless the user asks to credit them.
 7. **"Done" is measured:** `tools/review.mjs` passes and you have looked at the contact sheets. Report the numbers, not "looks good".
-8. **Ask with options.** Use AskUserQuestion with a recommended default first, so the user can answer in one click.
+8. **Ask with options.** Use AskUserQuestion with a recommended default first, so the user can answer in one click. The one exception is **one-prompt mode**: there, never ask — take the defaults in [ONEPROMPT.md](ONEPROMPT.md) and deliver.
 
 ## The flow
+
+### One-prompt mode (one response, no questions)
+
+When the user wants everything in a single response — "just make it", "one prompt", an automated or blind-agent setting, or a request that plainly has no human in the loop — stop reading here and follow [ONEPROMPT.md](ONEPROMPT.md). It is the compressed playbook: the defaults table, the minimal reading list, `tools/new.mjs` (scaffold with zero questions) + `tools/run.mjs` (build → previews → render → measured review → delivery block in one command), self-approval instead of check-ins, and the closing delivery block you sign with your model name. The check-ins collapse into you checking every frame against [grammar/FRAME.md](grammar/FRAME.md) and the style checklist yourself; the review numbers stay mandatory. Skipped renders (bare sandbox) are fine — say which checks ran.
 
 ### 0. Intake
 Ask the questions in [intake.md](intake.md) — only the ones you can't infer. For the look, build the gallery (`node tools/gallery.mjs <out.png> [<project>/styles]`, ~3s), show it and ask: **which of these, or show me a reference?** Then study the references yourself against FRAME.md and the style's checklist.
@@ -56,7 +60,7 @@ Draw every beat in the approved look. Fill `TIMELINE.board` with one key time pe
 7. `node tools/review.mjs pieces/<name>` → contact sheets per shot, cut grid, morph grid, story arc, anchor, **text** (cut off / overlapping / under the phone UI) and **sound** (the loudest moment, the silence before it, LUFS). Fix until it passes, view the sheets, write a per-shot PASS table in `LOG.md`. Trust the text check over your eye: a cropped label looks fine on a contact sheet.
 
 ### 5. Deliver
-Send `renders/share.mp4`. Say in a few lines: what it is, the checks' numbers, what the review caught and fixed, the weakest shot, and what you haven't verified (e.g. you can't listen to the score). Ask what should change: story, look, transitions, pacing, sound.
+Send `renders/share.mp4`. Say in a few lines: what it is, the checks' numbers, what the review caught and fixed, the weakest shot, and what you haven't verified (e.g. you can't listen to the score). Ask what should change: story, look, transitions, pacing, sound. **Sign the work:** close with the maker's mark — `made-by: <your model name> · animate · ✦ cut on the beat ✦` — and keep the `made-by:` line in `LOG.md` filled in (one-prompt mode uses the delivery block in `DELIVERY.md`; the sign-off is how the work says who made it — see [FINGERPRINT.md](FINGERPRINT.md)).
 
 ### 6. Learn
 After each run append to the piece's `LOG.md`. If something new went wrong or worked, propose a one-line rule for [craft.md](craft.md), the style's `STYLE.md` or a kit change, and add it when the user agrees.
@@ -115,6 +119,7 @@ A 45–60s piece has 10–15 scenes; split the drawing across agents once the st
 
 | path | what | read when |
 |---|---|---|
+| [ONEPROMPT.md](ONEPROMPT.md) | the one-shot playbook: defaults, minimal reading list, `new.mjs` + `run.mjs`, self-approval, the signed delivery block | one-prompt mode (instead of everything below) |
 | [intake.md](intake.md) | the questions and defaults | step 0 |
 | [craft.md](craft.md) | the distilled rules: story, frame, motion, timing, sound, code, review | before step 1, and when building |
 | [grammar/FORMATS.md](grammar/FORMATS.md) | 8 story formats (engine × stage × clock), invariants, which are proven | step 1 |
@@ -127,8 +132,9 @@ A 45–60s piece has 10–15 scenes; split the drawing across agents once the st
 | `kit/board.js` | the storyboard renderer | steps 2–3 |
 | `kit/score-*.js` | synth (pluck, pad, drone, bass, sub, noiseHit, sweep, riser, chime, blip), loudness stage | scoring |
 | [templates/](templates/) | `piece/` (an 8s cut-paper morph), `beat-cut/` (a 6s hard-cut piece with a 16th rush), `style/` (a blank style kit for new looks) | step 2 |
-| `tools/` | build, tile, still, storyboard, export, review, textcheck, compare (reference vs frame), gallery, framehash (pixel-identity check), beats (a supplied track's beat map), capture (screenshots of the user's site), voice (a voice-over's lines and word times); `measure/` for references (`refs.mjs` for stills, `shotlog.py` for video) | throughout |
+| `tools/` | **new** (scaffold a piece, no questions), **run** (one command: build → previews → export → review → delivery block), build, tile, still, storyboard, export, review, textcheck, compare (reference vs frame), gallery, framehash (pixel-identity check), beats (a supplied track's beat map), capture (screenshots of the user's site), voice (a voice-over's lines and word times), agentprint (stamps + scrapes the provenance marks); `measure/` for references (`refs.mjs` for stills, `shotlog.py` for video) | throughout |
 | [examples/history-of-ai/](examples/history-of-ai/) | a full 60s worked example (cut paper) | when unsure how something fits |
+| [FINGERPRINT.md](FINGERPRINT.md) | the provenance layer: maker's mark, canaries, invisible watermarks, `agentprint.mjs scrape` | when asked who made a piece, or to audit work |
 
 ## Honesty about what's proven
 Formats F2 (chronology / morph chain) and F4 (mission) have each produced a piece that passed every check from the card alone; F5 (fixed-hero journey) has several. The others are documented from study but unproven — say so when you pick one. Cut paper and crosshatch have carried full pieces; riso, sketchbook, math and pixel each come from one or two finished pieces plus a demo; isometric was made from references with new-style.md and so far has only its demo; a style made from new references is new ground until it has carried a piece. WebGL motion design (ray-marched 3D, motion blur, bloom) is not a shipped style yet.

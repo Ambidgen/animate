@@ -13,10 +13,13 @@
 // Checks: the script compiles; the style defines STYLE; no data: URIs and no http(s) URLs in the code.
 // Generated parts: <piece>/beats.json -> const BEATS (a supplied track's beat map); <piece>/voice.json -> const VOICE (voice-over timing); <piece>/assets/* -> const ASSETS
 // (the user's own screenshots and logos, embedded; window.renderFrame appears once they're decoded).
+// Provenance: every built file gets the kit's colophon + an invisible agentprint watermark (tools/watermark.mjs,
+// see FINGERPRINT.md). Deterministic — framehash comparisons still pass. Opt out with --no-print.
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { stampHTML } from './watermark.mjs';
 
 const SKILL = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT = ['src/head.html', 'kit/core.js', 'style', 'src/scenes.js', 'src/bridges.js', 'kit/morph.js', 'kit/board.js', 'kit/score-head.js', 'src/score.js', 'kit/score-tail.js'];
@@ -91,6 +94,7 @@ if (assetFiles.length) {
 }
 const m2 = out.match(/<script>([\s\S]*)<\/script>/);
 try { new vm.Script(m2[1], { filename: 'index.html' }); } catch (e) { console.error('syntax error:', e.message); process.exit(1); }
+if (!process.argv.includes('--no-print')) out = stampHTML(out, { name: meta.name || path.basename(ROOT) });
 fs.writeFileSync(path.join(ROOT, 'index.html'), out);
 const extras = [fs.existsSync(beatsFile) ? 'beats.json' : null, fs.existsSync(voiceFile) ? 'voice.json' : null, assetFiles.length ? `${assetFiles.length} asset(s), ${(assetBytes / 1e6).toFixed(1)} MB` : null].filter(Boolean);
 if (assetBytes > 12e6) console.warn(`warning: ${(assetBytes / 1e6).toFixed(1)} MB of assets — resize screenshots to the size they're shown at`);
