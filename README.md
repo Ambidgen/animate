@@ -67,6 +67,12 @@ As a plugin:
 /plugin install animate@animate
 ```
 
+Any agent that reads `SKILL.md` (Claude Code, Codex, Cursor, Gemini CLI) can install it with the open skills manager:
+
+```bash
+npx skills add Ambidgen/animate
+```
+
 Or copy the skill folder by hand: `plugins/animate/skills/animate/` → `~/.claude/skills/animate/`.
 
 ## Use
@@ -97,6 +103,10 @@ node $SKILL/tools/compare.mjs references/my-look/a.png pieces/my-piece 2.5 compa
 ```
 
 Open any built `index.html` in a browser to preview it (click to hear the score; `?t=12.5` freezes a frame). Every style's demo builds the same way: `node $SKILL/tools/build.mjs $SKILL/styles/riso/demo`.
+
+## Where it sits
+
+Animate is one tool in a widening agentic-animation stack. **[docs/agent-tools.md](docs/agent-tools.md)** is the survey of the rest — checked 2 Nov 2026: code-rendered engines (HyperFrames, Remotion, Motion Canvas, Manim), runtimes for animation that ships inside a product (GSAP, Motion, anime.js, Lottie, Rive), editors an agent can drive over MCP (Blender, After Effects, Spline), generative motion (fal, Replicate, HY-Motion, UniMate), local voice (Kokoro) and how skills get distributed now. It says what to borrow, what to skip, and why Remotion isn't this project's renderer.
 
 ## The example
 
