@@ -1,0 +1,11 @@
+{
+  "name": "vote-2026-vote",
+  "private": true,
+  "type": "module",
+  "description": "A one-minute nonpartisan get-out-the-vote piece, rendered headlessly (no browser).",
+  "scripts": {
+    "stills": "node render/render.mjs stills 2.5,9.8,16,21.5,26 stills/contact.png",
+    "video": "node render/render.mjs video --format 9:16 && node render/render.mjs video --format 1:1"
+  },
+  "dependencies": { "@napi-rs/canvas": "^0.1.80" }
+}
